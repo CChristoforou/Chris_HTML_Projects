@@ -5,7 +5,7 @@ Signatures
 1. Christopher Christoforou — Portfolio Signature
 A personal signature designed to accompany job applications and professional outreach. Features a circular profile photo, animated tagline, and social/contact icons.
 Preview
-![Signature Preview](Email_Signatures/preview.png)
+![Signature Preview](preview.png)
 Live preview
 Click here to view in browser
 How to view

@@ -1,14 +1,14 @@
 KYC Document Request Email
 A professional, fully responsive HTML email template for requesting identity verification documents from new customers during onboarding. Built to industry AML/KYC standards.
-
 ![Email Preview](preview.png)
 ---
 Overview
-This template is designed for financial services companies, fintechs, and any regulated business that requires identity verification as part of their onboarding process. It covers the three standard KYC document categories and includes clear instructions, document requirements, a deadline notice, and a security reassurance block.
+This template is designed for financial services companies, fintechs, and any regulated business that requires identity verification as part of their onboarding process.
+It covers the three standard KYC document categories and includes clear instructions, document requirements, a deadline notice, and a security reassurance block.
 ---
 Features
 Fully responsive — renders correctly on desktop and mobile email clients
-Email-client safe — built with table-based layout, inline styles; compatible with Outlook, Gmail, Apple Mail, and web clients
+Email-client safe — table-based layout, inline styles; compatible with Outlook, Gmail, Apple Mail
 Three KYC document sections — Proof of Identity, Proof of Address, Source of Funds
 Document requirements box — accepted formats, size limits, language requirements
 14-day deadline notice — prompts customer to act promptly
@@ -34,7 +34,7 @@ Policy links in footer	Your actual policy page URLs
 ---
 Document Sections
 1. Proof of Identity (POI)
-One of:
+One of the following valid, government-issued photo ID documents:
 Passport (all pages including photo page)
 National Identity Card (front and back)
 Driver's Licence (front and back)
@@ -64,9 +64,8 @@ Deadline	Search `14 days` and replace
 Document types	Edit the bullet point lists in each numbered section
 ---
 Compatibility
-Tested and compatible with:
 Client	Support
-Gmail
+Gmail (web)
 Outlook
 ---
 Tech

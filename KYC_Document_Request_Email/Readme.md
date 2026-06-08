@@ -1,5 +1,6 @@
 KYC Document Request Email
 A professional, fully responsive HTML email template for requesting identity verification documents from new customers during onboarding. Built to industry AML/KYC standards.
+
 ![Email Preview](preview.png)
 ---
 Overview

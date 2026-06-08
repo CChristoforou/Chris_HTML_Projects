@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Details Change Request Form</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0D1B3E;
+    --navy-mid: #1a2d5a;
+    --white: #ffffff;
+    --gray-bg: #f7f8fa;
+    --gray-line: #dde1ea;
+    --gray-mid: #8890a4;
+    --gray-dark: #3a3f4a;
+    --blue-light: #e8eef6;
+    --accent: #185FA5;
+    --danger: #b13a3a;
+    --text: #111827;
+    --radius: 6px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #eef1f6;
+    color: var(--text);
+    min-height: 100vh;
+    padding: 32px 16px;
+  }
+
+  .page {
+    background: white;
+    max-width: 880px;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 32px rgba(13,27,62,0.12);
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--navy);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .header img { height: 44px; width: auto; }
+  .header-title { text-align: right; }
+  .header-title h1 { color: white; font-size: 20px; font-weight: 600; letter-spacing: -0.3px; }
+  .header-title p { color: #8899bb; font-size: 12px; margin-top: 3px; }
+
+  /* BODY */
+  .body { padding: 28px 32px 32px; }
+
+  /* SECTION */
+  .section { margin-bottom: 24px; }
+  .section-title {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--navy);
+    text-transform: uppercase;
+    padding-bottom: 6px;
+    border-bottom: 1.5px solid var(--navy);
+    margin-bottom: 14px;
+  }
+
+  /* INFO GRID */
+  .info-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+
+  .field-wrap label {
+    display: block;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    color: var(--gray-mid);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  .field-wrap input, .field-wrap textarea, .field-wrap select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--gray-line);
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--gray-dark);
+    background: var(--gray-bg);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .field-wrap input:focus, .field-wrap textarea:focus, .field-wrap select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(24,95,165,0.1);
+    background: white;
+  }
+
+  /* CHECKBOX SELECTOR */
+  .checkbox-band {
+    background: var(--blue-light);
+    border: 1px solid var(--gray-line);
+    border-radius: var(--radius);
+    padding: 14px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .cb-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: white;
+    border: 1.5px solid var(--gray-line);
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-dark);
+    transition: all 0.15s;
+    user-select: none;
+    min-height: 42px;
+    white-space: nowrap;
+  }
+  .cb-pill:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(24,95,165,0.08);
+  }
+  .cb-pill.active {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: white;
+    box-shadow: 0 2px 8px rgba(13,27,62,0.18);
+  }
+  .cb-pill input { display: none; }
+  .cb-dot {
+    width: 18px; height: 18px;
+    border: 1.5px solid var(--gray-line);
+    background: white;
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--navy);
+    transition: all 0.15s;
+  }
+  .cb-pill:hover .cb-dot { border-color: var(--accent); }
+  .cb-pill.active .cb-dot {
+    background: white;
+    border-color: white;
+  }
+  .cb-pill.active .cb-dot::after { content: '✓'; }
+
+  /* Mobile: 2 columns on narrow screens */
+  @media (max-width: 600px) {
+    .checkbox-band { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* CHANGES LIST */
+  .changes-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .change-row {
+    border: 1px solid var(--gray-line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    animation: slideIn 0.2s ease;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .change-row-head {
+    background: var(--navy);
+    padding: 6px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .change-row-head span {
+    font-size: 11px;
+    font-weight: 600;
+    color: white;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* SIMPLE FIELD ROW (single old/new pair) */
+  .change-row-body {
+    display: grid;
+    grid-template-columns: 1fr 36px 1fr;
+    background: white;
+  }
+  .change-cell { padding: 10px 14px; }
+  .change-cell:first-child { background: var(--gray-bg); border-right: 1px solid var(--gray-line); }
+  .change-cell:last-child  { border-left: 1px solid var(--gray-line); }
+  .change-cell label {
+    display: block;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+    margin-bottom: 5px;
+  }
+  .change-cell:last-child label { color: var(--accent); font-weight: 600; }
+  .change-cell input, .change-cell select, .change-cell textarea {
+    width: 100%;
+    padding: 7px 10px;
+    border: 1px solid var(--gray-line);
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--gray-dark);
+    background: white;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .change-cell textarea { min-height: 60px; resize: vertical; line-height: 1.5; }
+  .change-cell:first-child input, .change-cell:first-child textarea { background: #eff1f5; }
+  .change-cell input:focus, .change-cell select:focus, .change-cell textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(24,95,165,0.1);
+  }
+
+  .arrow-col {
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gray-mid);
+    font-size: 16px;
+    border-top: 1px solid var(--gray-line);
+  }
+
+  /* PEOPLE / SHAREHOLDER GROUPS (multi-entry) */
+  .group-body {
+    background: var(--gray-bg);
+    padding: 14px;
+  }
+  .group-intro {
+    font-size: 12px;
+    color: var(--gray-dark);
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+  .entry-card {
+    background: white;
+    border: 1px solid var(--gray-line);
+    border-radius: var(--radius);
+    padding: 14px;
+    margin-bottom: 10px;
+    animation: slideIn 0.2s ease;
+  }
+  .entry-card:last-of-type { margin-bottom: 14px; }
+  .entry-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--gray-line);
+  }
+  .entry-head h4 {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--navy);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .entry-head .action-tag {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 8px;
+    border-radius: 99px;
+    background: var(--blue-light);
+    color: var(--accent);
+    margin-left: 8px;
+  }
+  .entry-head-left { display: flex; align-items: center; }
+  .remove-btn {
+    background: none;
+    border: 1px solid var(--gray-line);
+    color: var(--danger);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .remove-btn:hover { background: var(--danger); color: white; border-color: var(--danger); }
+
+  .entry-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .entry-grid .full { grid-column: 1 / -1; }
+  .entry-grid .half { grid-column: span 2; }
+
+  .entry-grid label {
+    display: block;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    color: var(--gray-mid);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .entry-grid input, .entry-grid select {
+    width: 100%;
+    padding: 7px 10px;
+    border: 1px solid var(--gray-line);
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--gray-dark);
+    background: var(--gray-bg);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .entry-grid input:focus, .entry-grid select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(24,95,165,0.1);
+    background: white;
+  }
+
+  .action-select {
+    margin-bottom: 12px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .action-select label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    color: var(--gray-mid);
+    text-transform: uppercase;
+  }
+  .action-select select {
+    padding: 5px 10px;
+    border: 1px solid var(--gray-line);
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: var(--gray-dark);
+    background: white;
+    outline: none;
+  }
+
+  .add-btn {
+    width: 100%;
+    padding: 10px;
+    background: white;
+    border: 1.5px dashed var(--accent);
+    color: var(--accent);
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .add-btn:hover { background: var(--blue-light); }
+
+  .empty-hint {
+    text-align: center;
+    padding: 24px;
+    border: 1.5px dashed var(--gray-line);
+    border-radius: var(--radius);
+    color: var(--gray-mid);
+    font-size: 13px;
+  }
+
+  /* NOTES */
+  .field-wrap textarea { min-height: 70px; resize: vertical; line-height: 1.5; }
+
+  /* DECLARATION */
+  .declaration-text {
+    font-size: 12px;
+    color: var(--gray-dark);
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+  .sig-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; align-items: end; }
+  .sig-field { display: flex; flex-direction: column; }
+  .sig-field label {
+    display: block;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+    margin-bottom: 4px;
+  }
+  .sig-input {
+    width: 100%;
+    border: none;
+    border-bottom: 1.5px solid var(--gray-line);
+    border-radius: 0;
+    padding: 4px 0 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--gray-dark);
+    background: transparent;
+    outline: none;
+    transition: border-bottom-color 0.15s;
+    margin-bottom: 20px;
+  }
+  .sig-input:focus { border-bottom-color: var(--accent); }
+  .sig-line {
+    border-bottom: 1.5px solid var(--gray-dark);
+    height: 1px;
+  }
+  .sig-hint {
+    font-size: 10px;
+    color: var(--gray-mid);
+    margin-top: 5px;
+    font-style: italic;
+  }
+
+  /* ACTIONS */
+  .actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 20px 32px;
+    background: var(--gray-bg);
+    border-top: 1px solid var(--gray-line);
+  }
+
+  .btn {
+    padding: 10px 22px;
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.15s;
+    border: none;
+  }
+  .btn-primary { background: var(--navy); color: white; }
+  .btn-primary:hover { background: var(--navy-mid); }
+  .btn-secondary { background: white; color: var(--gray-dark); border: 1px solid var(--gray-line); }
+  .btn-secondary:hover { border-color: var(--gray-dark); }
+
+  /* FOOTER */
+  .footer {
+    background: var(--navy);
+    text-align: center;
+    padding: 10px;
+    font-size: 11px;
+    color: #8899bb;
+    letter-spacing: 0.04em;
+  }
+
+  /* PRINT */
+  @page {
+    margin: 0;
+  }
+  @media print {
+    body { background: white; padding: 8mm; }
+    .page { box-shadow: none; border-radius: 0; max-width: 100%; }
+    .actions { display: none !important; }
+    .add-btn, .remove-btn { display: none !important; }
+    .cb-pill { border-width: 1px; }
+    .cb-pill.active { background: var(--navy) !important; color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .change-row-head { background: var(--navy) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .footer { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .change-row, .entry-card { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <img src="https://raw.githubusercontent.com/CChristoforou/Chris_HTML_Projects/main/Change_request_form/Company_Logo.png" alt="Company Logo" style="height:44px;width:auto;display:block;">
+    <div class="header-title">
+      <h1>Details Change Request</h1>
+      <p>Complete the fields relevant to your requested changes</p>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- REQUEST INFO -->
+    <div class="section">
+      <div class="section-title">Request Information</div>
+      <div class="info-grid">
+        <div class="field-wrap">
+          <label>Request Date</label>
+          <input type="text" id="req-date">
+        </div>
+        <div class="field-wrap">
+          <label>Submitted By</label>
+          <input type="text" placeholder="Full name">
+        </div>
+        <div class="field-wrap">
+          <label>Account / Ref No.</label>
+          <input type="text" placeholder="e.g. ACC-00142">
+        </div>
+        <div class="field-wrap">
+          <label>Contact Email</label>
+          <input type="email" placeholder="email@example.com">
+        </div>
+      </div>
+    </div>
+
+    <!-- FIELD SELECTOR -->
+    <div class="section">
+      <div class="section-title">Select Fields to Change</div>
+      <div class="checkbox-band" id="checkbox-band">
+        <label class="cb-pill" data-field="name">
+          <input type="checkbox" onchange="toggle('name', this.checked)">
+          <span class="cb-dot"></span> Name
+        </label>
+        <label class="cb-pill" data-field="address">
+          <input type="checkbox" onchange="toggle('address', this.checked)">
+          <span class="cb-dot"></span> Address
+        </label>
+        <label class="cb-pill" data-field="website">
+          <input type="checkbox" onchange="toggle('website', this.checked)">
+          <span class="cb-dot"></span> Website
+        </label>
+        <label class="cb-pill" data-field="email">
+          <input type="checkbox" onchange="toggle('email', this.checked)">
+          <span class="cb-dot"></span> Email
+        </label>
+        <label class="cb-pill" data-field="phone">
+          <input type="checkbox" onchange="toggle('phone', this.checked)">
+          <span class="cb-dot"></span> Phone
+        </label>
+        <label class="cb-pill" data-field="activities">
+          <input type="checkbox" onchange="toggle('activities', this.checked)">
+          <span class="cb-dot"></span> Business Activities
+        </label>
+        <label class="cb-pill" data-field="signatories">
+          <input type="checkbox" onchange="toggle('signatories', this.checked)">
+          <span class="cb-dot"></span> Signatories
+        </label>
+        <label class="cb-pill" data-field="directors">
+          <input type="checkbox" onchange="toggle('directors', this.checked)">
+          <span class="cb-dot"></span> Directors
+        </label>
+        <label class="cb-pill" data-field="shareholders">
+          <input type="checkbox" onchange="toggle('shareholders', this.checked)">
+          <span class="cb-dot"></span> Shareholders
+        </label>
+      </div>
+    </div>
+
+    <!-- CHANGES LIST -->
+    <div class="section">
+      <div class="section-title">Changes Requested</div>
+      <div class="changes-list" id="changes-list">
+        <div class="empty-hint" id="empty-hint">&#x2713; Tick a field above to get started</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="section">
+      <div class="section-title">Additional Notes</div>
+      <div class="field-wrap">
+        <textarea placeholder="Any additional context or supporting information..."></textarea>
+      </div>
+    </div>
+
+    <!-- DECLARATION -->
+    <div class="section">
+      <div class="section-title">Declaration</div>
+      <p class="declaration-text">I confirm that the information provided in this form is accurate and complete. I authorise the Company to update the relevant records accordingly.</p>
+      <div class="sig-grid">
+        <div class="sig-field">
+          <label>Print Name</label>
+          <input type="text" id="sig-name" class="sig-input" placeholder="Full name">
+          <div class="sig-line"></div>
+        </div>
+        <div class="sig-field">
+          <label>Date</label>
+          <input type="text" id="sig-date" class="sig-input" readonly>
+          <div class="sig-line"></div>
+        </div>
+      </div>
+      <div class="sig-full" style="margin-top:24px;">
+        <div class="sig-field">
+          <label>Signature</label>
+          <div class="sig-line" style="margin-top:40px;"></div>
+          <div class="sig-hint">Sign after printing / saving as PDF</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /body -->
+
+  <!-- ACTIONS -->
+  <div class="actions">
+    <button class="btn btn-primary" onclick="savePDF()">&#x2193; Save as PDF</button>
+    <button class="btn btn-secondary" onclick="clearForm()">&#x21BA; Clear Form</button>
+  </div>
+
+  <div class="footer">Company Ltd &nbsp;|&nbsp; Details Change Request Form &nbsp;|&nbsp; Confidential</div>
+
+</div><!-- /page -->
+
+<script>
+/* ----------  CONFIG  ---------- */
+
+// Simple before/after fields: company-level details
+const SIMPLE_FIELDS = {
+  name:       { label: 'Name',                type: 'text',     placeholder: 'e.g. Acme Ltd' },
+  address:    { label: 'Address',             type: 'textarea', placeholder: 'Street, City, Country' },
+  website:    { label: 'Website',             type: 'url',      placeholder: 'https://example.com' },
+  email:      { label: 'Email',               type: 'email',    placeholder: 'name@example.com' },
+  phone:      { label: 'Phone Number',        type: 'tel',      placeholder: '+357 ...' },
+  activities: { label: 'Business Activities', type: 'textarea', placeholder: 'Describe the business activities' },
+};
+
+// People groups with multiple entries
+const PERSON_FIELDS = [
+  { key: 'fullname',    label: 'Full Name',         type: 'text',  placeholder: 'First and last name', cls: 'full'  },
+  { key: 'dob',         label: 'Date of Birth',     type: 'date',  cls: ''                                            },
+  { key: 'idnumber',    label: 'ID / Passport No.', type: 'text',  placeholder: 'ID or passport number', cls: ''     },
+  { key: 'nationality', label: 'Nationality',       type: 'text',  placeholder: 'e.g. Cypriot',          cls: ''     },
+  { key: 'address',     label: 'Address',           type: 'text',  placeholder: 'Street, City, Country', cls: 'full' },
+  { key: 'email',       label: 'Email',             type: 'email', placeholder: 'name@example.com',      cls: ''     },
+  { key: 'phone',       label: 'Phone Number',      type: 'tel',   placeholder: '+357 ...',              cls: ''     },
+];
+
+const OWNERSHIP_OPTIONS = ['< 25%', '>= 25%', '> 50%'];
+const ACTION_OPTIONS    = ['Add', 'Update', 'Remove'];
+
+const SECTION_ORDER = ['name','address','website','email','phone','activities','signatories','directors','shareholders'];
+
+const GROUP_CONFIG = {
+  signatories:  { label: 'Signatories',  singular: 'Signatory',   isShareholder: false },
+  directors:    { label: 'Directors',    singular: 'Director',    isShareholder: false },
+  shareholders: { label: 'Shareholders', singular: 'Shareholder', isShareholder: true  },
+};
+
+/* ----------  STATE  ---------- */
+
+const selected = new Set();
+// Counter per group so each new entry has a stable unique id
+const entryCounters = { signatories: 0, directors: 0, shareholders: 0 };
+
+/* ----------  INIT  ---------- */
+
+document.getElementById('req-date').value =
+  new Date().toLocaleDateString('en-GB').replace(/\//g, ' / ');
+document.getElementById('sig-date').value =
+  new Date().toLocaleDateString('en-GB').replace(/\//g, ' / ');
+
+/* ----------  TOGGLE FIELD ON/OFF  ---------- */
+
+function toggle(id, on) {
+  const pill = document.querySelector('[data-field="' + id + '"]');
+  if (on) {
+    selected.add(id);
+    pill.classList.add('active');
+  } else {
+    selected.delete(id);
+    pill.classList.remove('active');
+    // Reset counter so when re-added you start fresh
+    if (entryCounters[id] !== undefined) entryCounters[id] = 0;
+  }
+  render();
+}
+
+/* ----------  RENDER  ---------- */
+
+function render() {
+  const list = document.getElementById('changes-list');
+
+  // Preserve user-entered values across re-renders
+  const saved = {};
+  list.querySelectorAll('input, select, textarea').forEach(el => {
+    if (el.id) saved[el.id] = el.value;
+  });
+
+  // Build sections in the configured order
+  const rows = SECTION_ORDER.filter(id => selected.has(id));
+
+  if (rows.length === 0) {
+    list.innerHTML = '<div class="empty-hint" id="empty-hint">&#x2713; Tick a field above to get started</div>';
+    return;
+  }
+
+  list.innerHTML = rows.map(id => {
+    if (SIMPLE_FIELDS[id]) return renderSimple(id);
+    if (GROUP_CONFIG[id])  return renderGroup(id);
+    return '';
+  }).join('');
+
+  // Restore values
+  Object.entries(saved).forEach(([key, val]) => {
+    const el = document.getElementById(key);
+    if (el && val) el.value = val;
+  });
+
+  // If group has no entries yet, seed one
+  Object.keys(GROUP_CONFIG).forEach(gid => {
+    if (selected.has(gid) && entryCounters[gid] === 0) {
+      addEntry(gid);
+    }
+  });
+}
+
+/* ----------  RENDER: simple before/after row  ---------- */
+
+function renderSimple(id) {
+  const f = SIMPLE_FIELDS[id];
+  return `
+    <div class="change-row">
+      <div class="change-row-head"><span>${f.label}</span></div>
+      <div class="change-row-body">
+        <div class="change-cell">
+          <label>Current value</label>
+          ${inputHTML(f, 'prev-' + id, 'Current value')}
+        </div>
+        <div class="arrow-col">&#x2192;</div>
+        <div class="change-cell">
+          <label>New value</label>
+          ${inputHTML(f, 'new-' + id, 'New value')}
+        </div>
+      </div>
+    </div>`;
+}
+
+function inputHTML(f, id, ph) {
+  if (f.type === 'textarea') {
+    return `<textarea id="${id}" placeholder="${ph}"></textarea>`;
+  }
+  return `<input type="${f.type}" id="${id}" placeholder="${f.placeholder || ph}">`;
+}
+
+/* ----------  RENDER: people / shareholder group  ---------- */
+
+function renderGroup(gid) {
+  const g = GROUP_CONFIG[gid];
+  const intro = g.isShareholder
+    ? 'Add one or more shareholders. Indicate whether each entry is being added, updated, or removed.'
+    : 'Add one or more ' + g.label.toLowerCase() + '. Indicate whether each entry is being added, updated, or removed.';
+
+  return `
+    <div class="change-row" data-group="${gid}">
+      <div class="change-row-head"><span>${g.label}</span></div>
+      <div class="group-body">
+        <p class="group-intro">${intro}</p>
+        <div id="entries-${gid}"></div>
+        <button type="button" class="add-btn" onclick="addEntry('${gid}')">+ Add ${g.singular}</button>
+      </div>
+    </div>`;
+}
+
+/* ----------  ADD / REMOVE ENTRY  ---------- */
+
+function addEntry(gid) {
+  entryCounters[gid] += 1;
+  const n = entryCounters[gid];
+  const g = GROUP_CONFIG[gid];
+
+  const fieldsHTML = PERSON_FIELDS.map(field => `
+    <div class="${field.cls}">
+      <label>${field.label}</label>
+      <input type="${field.type}" id="${gid}-${n}-${field.key}" ${field.placeholder ? 'placeholder="' + field.placeholder + '"' : ''}>
+    </div>
+  `).join('');
+
+  const ownershipHTML = g.isShareholder ? `
+    <div class="">
+      <label>% Ownership</label>
+      <select id="${gid}-${n}-ownership">
+        <option value="" disabled selected>Select...</option>
+        ${OWNERSHIP_OPTIONS.map(o => `<option value="${o}">${o}</option>`).join('')}
+      </select>
+    </div>
+  ` : '';
+
+  const card = document.createElement('div');
+  card.className = 'entry-card';
+  card.dataset.entry = gid + '-' + n;
+  card.innerHTML = `
+    <div class="entry-head">
+      <div class="entry-head-left">
+        <h4>${g.singular} ${n}</h4>
+        <span class="action-tag" id="${gid}-${n}-action-tag">Add</span>
+      </div>
+      <button type="button" class="remove-btn" onclick="removeEntry('${gid}', ${n})">Remove</button>
+    </div>
+    <div class="action-select">
+      <label for="${gid}-${n}-action">Action:</label>
+      <select id="${gid}-${n}-action" onchange="updateActionTag('${gid}', ${n})">
+        ${ACTION_OPTIONS.map(o => `<option value="${o}">${o}</option>`).join('')}
+      </select>
+    </div>
+    <div class="entry-grid">
+      ${fieldsHTML}
+      ${ownershipHTML}
+    </div>
+  `;
+
+  const container = document.getElementById('entries-' + gid);
+  if (container) container.appendChild(card);
+}
+
+function removeEntry(gid, n) {
+  const card = document.querySelector('[data-entry="' + gid + '-' + n + '"]');
+  if (!card) return;
+  const container = card.parentElement;
+  card.remove();
+  // If none left, add a fresh one back so the group is never empty
+  if (container && container.children.length === 0) {
+    addEntry(gid);
+  }
+}
+
+function updateActionTag(gid, n) {
+  const sel = document.getElementById(gid + '-' + n + '-action');
+  const tag = document.getElementById(gid + '-' + n + '-action-tag');
+  if (sel && tag) tag.textContent = sel.value;
+}
+
+/* ----------  ACTIONS  ---------- */
+
+function savePDF() { window.print(); }
+
+function clearForm() {
+  selected.clear();
+  Object.keys(entryCounters).forEach(k => entryCounters[k] = 0);
+  document.querySelectorAll('.cb-pill').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.cb-pill input').forEach(i => i.checked = false);
+  document.querySelectorAll('input[type=text], input[type=email], textarea').forEach(el => {
+    if (el.id !== 'req-date' && el.id !== 'sig-date') el.value = '';
+  });
+  render();
+  document.getElementById('req-date').value =
+    new Date().toLocaleDateString('en-GB').replace(/\//g, ' / ');
+  document.getElementById('sig-date').value =
+    new Date().toLocaleDateString('en-GB').replace(/\//g, ' / ');
+}
+</script>
+</body>
+</html>
